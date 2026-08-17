@@ -23,6 +23,7 @@
   --ink:#151063;
   --ink-soft:#4A4392;
   --magenta-deep:#C4008A;
+  --magenta-hover:#DB009C;   /* brighter on hover, still 4.67:1 with white */
   --deep-2:#1A1AA8;
   --space:#120C4A;
   --gold:#F0A93C;
@@ -79,6 +80,8 @@ p{margin:0 0 1em}
   line-height:1.1;
 }
 .btn:hover{transform:translateY(-3px) rotate(-1deg)}
+/* only the default magenta button brightens; ghost, sky and deep keep their own colour */
+.btn:not(.ghost):not(.sky):not(.deep):hover{background:var(--magenta-hover)}
 .btn:active{transform:translateY(0)}
 .btn.ghost{background:#fff;color:var(--ink)}
 .btn.sky{background:var(--sky);color:var(--ink)}
@@ -144,8 +147,9 @@ section{padding:clamp(56px,8vw,104px) 0;position:relative}
   text-decoration:none;font-weight:650;font-size:15.5px;padding:9px 14px;
   border-radius:var(--r-pill);transition:background .15s,color .15s;
 }
-.navlinks a:hover{background:#fff}
-.navlinks a.on{background:var(--ink);color:#fff}
+/* the CTA keeps its own button styling; these two are for the plain text links only */
+.navlinks a:not(.btn):hover{background:#fff}
+.navlinks a:not(.btn).on{background:var(--ink);color:#fff}
 .navtoggle{display:none;margin-left:auto;background:#fff;border:0;border-radius:var(--r-pill);
   padding:11px 17px;font-family:var(--font-display);font-size:16px;cursor:pointer;box-shadow:var(--sticker-sm)}
 
