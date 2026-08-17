@@ -3,6 +3,7 @@ COSMIC CAT CLAW ARCADE — static site build
 
 Six pages, shared assets. Everything relative, so it runs from a plain
 folder, a staging server, or any static host with no build step.
+These files live at the root of "04 - Website". Keep assets/ beside them.
 
   index.html              Home
   tokens-and-vip.html     Tokens, VIP membership, gift cards
@@ -26,5 +27,6 @@ NOTES
   iframe in index.html to swap in the Maps Embed API instead.
 - Display type is Bree Serif standing in for Gelica Semi Bold. License
   Gelica and swap --font-display in styles.css.
-- The client-review "Build notes" panel is deliberately NOT in this build.
-  It lives only in the single-file concept.
+- The client-review notes live in "Cosmic Cat - Website Concept Notes.md"
+  next to these files. That document is the record of what is proposed
+  versus confirmed, and it is the one to read before the client call.
