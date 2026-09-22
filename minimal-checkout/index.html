@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Squishy Bar Workshop — minimal checkout mockup</title>
+<!--
+  LOCAL MOCKUP ONLY. Not staged, not published.
+  Cosmic Cat Claw Arcade · Squishy Bar Workshop checkout restructure
+  Modelled on puppy-yogaclub.com/products/san-diego
+  Session data below is DEMO DATA, not live Shopify inventory.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FFF7FB;
+  --pink:#FFECF6;
+  --lav:#F2ECFF;
+  --ink:#2A1B5E;
+  --body:#4B3E85;
+  --cta:#C4008A;
+  --bar:#B4008C;
+  --line:#EADFF3;
+  --amber:#A85B00;
+  --red:#C4183C;
+  --white:#fff;
+  --r:16px;
+  --shadow-pink:6px 6px 0 #FFC9E8;
+  --shadow-grape:6px 6px 0 #DCC9FF;
+  --shadow-sky:6px 6px 0 #C5EAFF;
+  --shadow-gold:6px 6px 0 #FFE2A8;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--cream);
+  color:var(--body);
+  font-family:'Hanken Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-size:16px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4{font-family:'Bree Serif',Georgia,serif;color:var(--ink);font-weight:400;margin:0;line-height:1.15}
+a{color:var(--cta)}
+img{display:block;max-width:100%}
+button{font-family:inherit;font-size:inherit;color:inherit}
+
+/* gem confetti layer */
+#gems{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+#gems svg{position:absolute}
+
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* ---------- header ---------- */
+header.site{
+  position:sticky;top:0;z-index:40;
+  background:rgba(255,247,251,.92);
+  backdrop-filter:saturate(1.2) blur(8px);
+  border-bottom:1px solid var(--line);
+}
+header.site .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px}
+.brand{display:flex;align-items:center;gap:9px;text-decoration:none}
+.brand .mark{width:30px;height:30px;border-radius:9px;background:var(--ink);color:#fff;display:grid;place-items:center;font-family:'Bree Serif',serif;font-size:15px}
+.brand span{font-family:'Bree Serif',serif;color:var(--ink);font-size:16px;letter-spacing:.2px}
+.hphone{
+  display:inline-flex;align-items:center;gap:7px;
+  border:1.5px solid var(--ink);border-radius:999px;
+  padding:7px 14px;font-size:13.5px;font-weight:600;
+  color:var(--ink);text-decoration:none;white-space:nowrap;
+}
+
+/* ---------- product layout ---------- */
+.product{display:grid;grid-template-columns:1fr;gap:0}
+@media(min-width:980px){
+  .product{grid-template-columns:minmax(0,1.05fr) minmax(430px,.95fr);gap:52px;padding-top:34px;align-items:start}
+  .gallery-col{position:sticky;top:78px}
+}
+
+/* ---------- gallery ---------- */
+.gallery{margin:0 -20px}
+@media(min-width:980px){.gallery{margin:0}}
+.track{
+  display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;
+  scrollbar-width:none;-ms-overflow-style:none;
+}
+.track::-webkit-scrollbar{display:none}
+.track figure{margin:0;flex:0 0 100%;scroll-snap-align:center;position:relative}
+.track figure img{width:100%;aspect-ratio:4/4.6;object-fit:cover}
+@media(min-width:980px){
+  .track{border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-grape)}
+  .track figure img{aspect-ratio:4/4.1}
+}
+.gcount{
+  position:absolute;right:14px;bottom:14px;z-index:3;
+  background:rgba(42,27,94,.78);color:#fff;border-radius:999px;
+  font-size:12px;font-weight:600;letter-spacing:.4px;padding:5px 11px;
+  font-variant-numeric:tabular-nums;
+}
+.gwrap{position:relative}
+.dots{display:flex;gap:6px;justify-content:center;padding:12px 0 2px}
+.dots i{width:6px;height:6px;border-radius:50%;background:#E3D2EE;transition:all .2s;display:block}
+.dots i.on{background:var(--cta);width:18px;border-radius:999px}
+@media(min-width:980px){.dots{display:none}}
+.thumbs{display:none}
+@media(min-width:980px){
+  .thumbs{display:flex;gap:8px;margin-top:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  .thumbs::-webkit-scrollbar{display:none}
+  .thumbs button{flex:0 0 76px;padding:0;border:0;background:none;cursor:pointer;border-radius:9px;overflow:hidden;line-height:0;box-shadow:0 0 0 2px transparent;transition:box-shadow .15s,opacity .15s;opacity:.62}
+  .thumbs button img{aspect-ratio:1/1;object-fit:cover;width:100%}
+  .thumbs button.on{opacity:1;box-shadow:0 0 0 2px var(--cta)}
+  .thumbs button:hover{opacity:1}
+}
+
+/* ---------- product info ---------- */
+.info{padding:22px 0 0}
+@media(min-width:980px){.info{padding:0}}
+.eyebrow{
+  font-size:11.5px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;
+  color:var(--cta);margin:0 0 10px;
+}
+h1{font-size:30px;letter-spacing:-.2px}
+@media(min-width:700px){h1{font-size:38px}}
+.lede{margin:14px 0 0;font-size:16.5px;max-width:46ch}
+.priceline{display:flex;align-items:baseline;gap:10px;margin:16px 0 0}
+.priceline b{font-family:'Bree Serif',serif;font-weight:400;font-size:26px;color:var(--ink)}
+.priceline small{font-size:13.5px;color:var(--body)}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:18px 0 0;padding:0;list-style:none}
+.chips li{
+  background:var(--white);border:1px solid var(--line);border-radius:999px;
+  padding:6px 13px;font-size:13px;font-weight:600;color:var(--ink);
+}
+
+/* ---------- booking panel ---------- */
+.panel{
+  background:var(--white);border:1px solid var(--line);border-radius:22px;
+  padding:22px 18px;margin:26px 0 0;box-shadow:var(--shadow-pink);
+}
+@media(min-width:700px){.panel{padding:26px 24px}}
+.step{padding:0 0 20px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.step:last-of-type{border-bottom:0;padding-bottom:0;margin-bottom:0}
+.step h3{
+  font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:14px;
+  color:var(--ink);display:flex;align-items:center;gap:9px;margin:0 0 3px;
+}
+.step h3 em{
+  font-style:normal;width:21px;height:21px;border-radius:50%;background:var(--lav);
+  color:var(--ink);display:grid;place-items:center;font-size:11.5px;font-weight:700;flex:none;
+}
+.hint{font-size:13px;margin:0 0 13px;color:#6F62A8}
+
+/* month tabs */
+.mtabs{display:flex;gap:6px;margin:0 0 12px;flex-wrap:wrap}
+.mtabs button{
+  border:1px solid var(--line);background:var(--white);border-radius:999px;
+  padding:6px 14px;font-size:13px;font-weight:600;color:var(--body);cursor:pointer;
+}
+.mtabs button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+
+/* date grid */
+.dates{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px}
+.dbtn{
+  position:relative;border:1.5px solid var(--line);background:var(--white);
+  border-radius:14px;padding:10px 6px 9px;cursor:pointer;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:1px;transition:border-color .12s,background .12s;
+}
+.dbtn:hover{border-color:#D8C5EA}
+.dbtn .dw{font-size:10.5px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:#7A6DB5}
+.dbtn .dn{font-family:'Bree Serif',serif;font-size:23px;color:var(--ink);line-height:1.1}
+.dbtn .dm{font-size:10.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:#7A6DB5}
+.dbtn .st{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-top:3px;min-height:13px}
+.dbtn .st.low{color:var(--amber)}
+.dbtn .st.so{color:var(--red)}
+.dbtn.on{border-color:var(--cta);background:#FFF0F9;box-shadow:0 0 0 3px #FFE2F3}
+.dbtn.out{background:var(--pink);border-color:#F6D8E9}
+.dbtn.out .dn,.dbtn.out .dw{text-decoration:line-through;color:#9A8CC4}
+.dbtn.out.on{border-color:var(--red);box-shadow:0 0 0 3px #FBDCE4}
+.dbtn .today{position:absolute;top:6px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:#E0A400}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin:11px 0 0;font-size:11.5px;color:#7A6DB5}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:6px;height:6px;border-radius:50%;background:#E0A400;display:block}
+
+/* times */
+.times{display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:420px){.times{grid-template-columns:1fr 1fr}}
+.tbtn{
+  border:1.5px solid var(--line);background:var(--white);border-radius:14px;
+  padding:12px 14px;cursor:pointer;text-align:left;transition:border-color .12s,background .12s;
+}
+.tbtn b{display:block;font-family:'Bree Serif',serif;font-weight:400;font-size:18px;color:var(--ink);line-height:1.2}
+.tbtn span{display:block;font-size:11.5px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:#7A6DB5;margin-top:3px}
+.tbtn.on{border-color:var(--cta);background:#FFF0F9;box-shadow:0 0 0 3px #FFE2F3}
+.tbtn.out{background:var(--pink);border-color:#F6D8E9;cursor:default}
+.tbtn.out b{color:#9A8CC4}
+.tbtn.out span{color:var(--red)}
+.tbtn .low{color:var(--amber)}
+.tmsg{
+  border:1.5px dashed #DCCCEC;border-radius:14px;padding:14px;
+  font-size:13.5px;color:#6F62A8;text-align:center;
+}
+.tmsg.soldout{border-style:solid;border-color:#F3CEDD;background:#FFF4F8}
+.tmsg b{display:block;color:var(--ink);font-family:'Bree Serif',serif;font-weight:400;font-size:16px;margin-bottom:8px}
+.nextbtn{
+  border:0;background:var(--ink);color:#fff;border-radius:999px;
+  padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;margin-top:2px;
+}
+
+/* boxes */
+.boxes{display:grid;gap:10px}
+.box{
+  border:1.5px solid var(--line);border-radius:16px;padding:14px;background:var(--white);
+  display:flex;gap:14px;align-items:flex-start;transition:border-color .12s,background .12s;
+}
+.box.has{border-color:var(--cta);background:#FFF9FD}
+.box .bmain{flex:1;min-width:0}
+.box h4{font-family:'Bree Serif',serif;font-size:18px;display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.box h4 s{text-decoration:none;font-family:'Hanken Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--cta)}
+.box ul{margin:7px 0 0;padding:0 0 0 16px;font-size:13.5px}
+.box ul li{margin:2px 0}
+.qty{display:flex;align-items:center;gap:0;border:1.5px solid var(--line);border-radius:999px;overflow:hidden;flex:none;background:var(--white)}
+.qty button{width:32px;height:32px;border:0;background:none;cursor:pointer;font-size:17px;color:var(--ink);line-height:1;display:grid;place-items:center}
+.qty button:disabled{color:#CFC3E4;cursor:default}
+.qty output{min-width:24px;text-align:center;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;font-size:15px}
+
+/* summary + cta */
+.summary{
+  margin-top:18px;background:var(--lav);border-radius:16px;padding:14px 16px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+.summary .sl{font-size:13.5px;font-weight:600;color:var(--ink)}
+.summary .st{font-family:'Bree Serif',serif;font-size:22px;color:var(--ink)}
+.cta{
+  display:block;width:100%;margin-top:12px;border:0;border-radius:999px;
+  background:var(--bar);color:#fff;font-size:16.5px;font-weight:700;letter-spacing:.2px;
+  padding:16px;cursor:pointer;transition:opacity .15s;
+}
+.cta:disabled{opacity:.4;cursor:default}
+.fineprint{font-size:12px;color:#7A6DB5;text-align:center;margin:10px 0 0}
+.demonote{
+  margin-top:10px;font-size:12.5px;background:#FFF6E4;border:1px solid #F3E0B8;
+  color:#7A5A12;border-radius:12px;padding:10px 12px;display:none;
+}
+
+/* sticky mobile bar */
+.sticky{
+  position:fixed;left:0;right:0;bottom:0;z-index:50;
+  background:var(--bar);color:#fff;padding:11px 18px;
+  display:none;align-items:center;justify-content:space-between;gap:12px;
+  box-shadow:0 -6px 22px rgba(42,27,94,.16);
+}
+.sticky.show{display:flex}
+@media(min-width:980px){.sticky{display:none!important}}
+.sticky .sm{font-size:12.5px;line-height:1.3;opacity:.92}
+.sticky .sm b{display:block;font-size:14px;opacity:1}
+.sticky button{border:0;background:#fff;color:var(--bar);border-radius:999px;padding:11px 20px;font-weight:700;font-size:14.5px;cursor:pointer;white-space:nowrap}
+
+/* ---------- accordions ---------- */
+.details{max-width:760px;margin:44px auto 0;padding-bottom:10px}
+.details h2{font-size:24px;margin:0 0 14px}
+.acc{border-top:1px solid var(--line)}
+.acc:last-child{border-bottom:1px solid var(--line)}
+.acc summary{
+  list-style:none;cursor:pointer;padding:17px 34px 17px 0;position:relative;
+  font-family:'Bree Serif',serif;font-size:17.5px;color:var(--ink);
+}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary:after{
+  content:"";position:absolute;right:6px;top:50%;width:9px;height:9px;
+  border-right:2px solid var(--cta);border-bottom:2px solid var(--cta);
+  transform:translateY(-70%) rotate(45deg);transition:transform .2s;
+}
+.acc[open] summary:after{transform:translateY(-30%) rotate(225deg)}
+.acc .ac{padding:0 0 18px;font-size:15px}
+.acc .ac p{margin:0 0 10px}
+.acc .ac p:last-child{margin-bottom:0}
+.acc .ac ul{margin:0;padding-left:18px}
+.acc .ac li{margin:4px 0}
+.twocol{display:grid;gap:18px}
+@media(min-width:560px){.twocol{grid-template-columns:1fr 1fr}}
+.twocol h5{margin:0 0 4px;font-family:'Bree Serif',serif;font-weight:400;font-size:16px;color:var(--ink)}
+
+/* ---------- footer ---------- */
+footer.site{margin-top:46px;background:var(--ink);color:#D9CEF4;padding:34px 0 84px}
+@media(min-width:980px){footer.site{padding-bottom:34px}}
+footer.site .wrap{display:grid;gap:20px}
+@media(min-width:700px){footer.site .wrap{grid-template-columns:1fr 1fr 1fr}}
+footer.site h6{margin:0 0 7px;font-family:'Bree Serif',serif;font-weight:400;font-size:15px;color:#fff}
+footer.site a{color:#FFC9E8;text-decoration:none}
+footer.site p{margin:0 0 4px;font-size:14px}
+.mockstamp{
+  position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:16px 20px 0;
+  font-size:11.5px;color:#9A8CC4;letter-spacing:.3px;
+}
+</style>
+</head>
+<body>
+
+<div id="gems" aria-hidden="true"></div>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="#"><span class="mark">CC</span><span>Cosmic Cat</span></a>
+    <a class="hphone" href="tel:+17025086959">(702) 508-6959</a>
+  </div>
+</header>
+
+<div class="mockstamp">LOCAL MOCKUP &middot; demo session data</div>
+
+<main class="wrap">
+  <div class="product">
+
+    <!-- GALLERY -->
+    <div class="gallery-col">
+      <div class="gallery">
+        <div class="gwrap">
+          <div class="track" id="track"></div>
+          <div class="gcount" id="gcount">1 / 11</div>
+        </div>
+        <div class="dots" id="dots"></div>
+      </div>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+
+    <!-- INFO + BOOKING -->
+    <div class="info">
+      <p class="eyebrow">Weekend mornings and Friday evenings</p>
+      <h1>Decorate a box.<br>Fill it with squishies.<br>Take it home.</h1>
+      <div class="priceline"><b>From $35</b><small>per child · 1 hour</small></div>
+      <p class="lede">An hour at the craft table with every gem, charm and squishy supplied! Pick a day, pick a box, and we will have a seat set and waiting.</p>
+      <ul class="chips">
+        <li>1 sparkly hour</li>
+        <li>Everything included!</li>
+        <li>Limited seating!</li>
+      </ul>
+
+      <section class="panel" id="panel">
+        <div class="step">
+          <h3><em>1</em>Pick a day</h3>
+          <p class="hint">Tap a day to see its sessions</p>
+          <div class="mtabs" id="mtabs"></div>
+          <div class="dates" id="dates"></div>
+          <div class="legend" id="legend"></div>
+        </div>
+
+        <div class="step">
+          <h3><em>2</em>Choose a session</h3>
+          <p class="hint">Each one runs a full hour</p>
+          <div id="tmsg" class="tmsg">Pick a day on the calendar to see its session times.</div>
+          <div class="times" id="times"></div>
+        </div>
+
+        <div class="step">
+          <h3><em>3</em>Choose a box for each child</h3>
+          <p class="hint">One box each</p>
+          <div class="boxes" id="boxes">
+            <div class="box" data-box="full">
+              <div class="bmain">
+                <h4>Full Box <s>$45 per child</s></h4>
+                <ul>
+                  <li>Full-size keepsake box</li>
+                  <li>All gems and charms</li>
+                  <li>5 squishies of their choosing</li>
+                </ul>
+              </div>
+              <div class="qty">
+                <button type="button" data-step="-1" aria-label="One fewer Full Box">&minus;</button>
+                <output id="q-full">0</output>
+                <button type="button" data-step="1" aria-label="One more Full Box">+</button>
+              </div>
+            </div>
+            <div class="box" data-box="mini">
+              <div class="bmain">
+                <h4>Mini Box <s>$35 per child</s></h4>
+                <ul>
+                  <li>Mini keepsake box</li>
+                  <li>All gems and charms</li>
+                  <li>3 squishies of their choosing</li>
+                </ul>
+              </div>
+              <div class="qty">
+                <button type="button" data-step="-1" aria-label="One fewer Mini Box">&minus;</button>
+                <output id="q-mini">0</output>
+                <button type="button" data-step="1" aria-label="One more Mini Box">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary">
+          <div class="sl" id="sumline">Pick a day to get started</div>
+          <div class="st" id="sumtotal">$0</div>
+        </div>
+        <button class="cta" id="cta" disabled>Reserve your seats</button>
+        <p class="fineprint">Spaces are limited, so reserve your child's spot in advance.</p>
+        <div class="demonote" id="demonote"></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- DETAILS -->
+  <section class="details">
+    <h2>Everything else</h2>
+
+    <details class="acc" open>
+      <summary>The hour</summary>
+      <div class="ac">
+        <p>Every child gets a seat at the table with the gems, charms, stickers and squishies already laid out. A Cosmic Cat team member walks the table through it, then everyone fills their box and takes it home the same day.</p>
+        <p>Grown-ups are welcome to pull up a chair. Come a few minutes early so nobody misses the start!</p>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>What is included</summary>
+      <div class="ac">
+        <div class="twocol">
+          <div>
+            <h5>Full Box · $45</h5>
+            <ul><li>Full-size keepsake box</li><li>All gems and charms</li><li>5 squishies of their choosing</li></ul>
+          </div>
+          <div>
+            <h5>Mini Box · $35</h5>
+            <ul><li>Mini keepsake box</li><li>All gems and charms</li><li>3 squishies of their choosing</li></ul>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>Session times</summary>
+      <div class="ac">
+        <div class="twocol">
+          <div><h5>Saturday &amp; Sunday</h5><p>10:00 &amp; 11:00 AM</p></div>
+          <div><h5>Friday</h5><p>5:00 &ndash; 6:00 PM</p></div>
+        </div>
+        <p style="margin-top:12px">Every session runs a full hour. Stay and play in the arcade afterwards!</p>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>Where to find us</summary>
+      <div class="ac">
+        <p>Cosmic Cat Claw Arcade<br>7150 S Durango Drive, Suite 180<br>Las Vegas, NV 89113</p>
+        <p><a href="https://maps.google.com/?q=7150+S+Durango+Drive+Suite+180+Las+Vegas+NV+89113" target="_blank" rel="noopener">Open in Google Maps</a></p>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>Questions</summary>
+      <div class="ac">
+        <p>Give us a call at <a href="tel:+17025086959">(702) 508-6959</a> and a Cosmic Cat team member will be happy to help!</p>
+      </div>
+    </details>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div>
+      <h6>Cosmic Cat Claw Arcade</h6>
+      <p>7150 S Durango Drive, Suite 180</p>
+      <p>Las Vegas, NV 89113</p>
+      <p><a href="tel:+17025086959">(702) 508-6959</a></p>
+    </div>
+    <div>
+      <h6>Visit</h6>
+      <p><a href="#">Home</a></p>
+      <p><a href="#">Squishy Bar Workshop</a></p>
+      <p><a href="#">Memberships</a></p>
+    </div>
+    <div>
+      <h6>Legal</h6>
+      <p><a href="#">Terms of Service</a></p>
+      <p><a href="#">Privacy Policy</a></p>
+      <p><a href="#">Refund Policy</a></p>
+    </div>
+  </div>
+</footer>
+
+<div class="sticky" id="sticky">
+  <div class="sm"><b id="stickyline">&nbsp;</b><span id="stickysub">&nbsp;</span></div>
+  <button type="button" id="stickybtn">Reserve</button>
+</div>
+
+<script>
+/* ============================================================
+   DEMO DATA — not live Shopify inventory.
+   Row: [weekday, dayNumber, [ [timeLabel, timeSub, seatsLeft], ... ] ]
+   ============================================================ */
+var TODAY = {y:2026, m:8, d:22};           // 22 Sep 2026 (month is 0-based)
+var MONTHS = [
+  {key:'Sep', name:'September', m:8, y:2026, rows:[
+    ['Fri',25,[['5:00 PM','5:00 – 6:00 PM',0]]],
+    ['Sat',26,[['10:00 AM','10:00 – 11:00 AM',3],['11:00 AM','11:00 – 12:00 PM',9]]],
+    ['Sun',27,[['10:00 AM','10:00 – 11:00 AM',14],['11:00 AM','11:00 – 12:00 PM',18]]]
+  ]},
+  {key:'Oct', name:'October', m:9, y:2026, rows:[
+    ['Fri',2,[['5:00 PM','5:00 – 6:00 PM',1]]],
+    ['Sat',3,[['10:00 AM','10:00 – 11:00 AM',11],['11:00 AM','11:00 – 12:00 PM',22]]],
+    ['Sun',4,[['10:00 AM','10:00 – 11:00 AM',20],['11:00 AM','11:00 – 12:00 PM',22]]],
+    ['Fri',9,[['5:00 PM','5:00 – 6:00 PM',8]]],
+    ['Sat',10,[['10:00 AM','10:00 – 11:00 AM',22],['11:00 AM','11:00 – 12:00 PM',19]]],
+    ['Sun',11,[['10:00 AM','10:00 – 11:00 AM',22],['11:00 AM','11:00 – 12:00 PM',22]]],
+    ['Fri',16,[['5:00 PM','5:00 – 6:00 PM',12]]],
+    ['Sat',17,[['10:00 AM','10:00 – 11:00 AM',16],['11:00 AM','11:00 – 12:00 PM',22]]],
+    ['Sun',18,[['10:00 AM','10:00 – 11:00 AM',22],['11:00 AM','11:00 – 12:00 PM',22]]],
+    ['Fri',23,[['5:00 PM','5:00 – 6:00 PM',15]]],
+    ['Sat',24,[['10:00 AM','10:00 – 11:00 AM',22],['11:00 AM','11:00 – 12:00 PM',22]]],
+    ['Sun',25,[['10:00 AM','10:00 – 11:00 AM',22],['11:00 AM','11:00 – 12:00 PM',22]]],
+    ['Fri',30,[['5:00 PM','5:00 – 6:00 PM',15]]],
+    ['Sat',31,[['10:00 AM','10:00 – 11:00 AM',0],['11:00 AM','11:00 – 12:00 PM',0]]]
+  ]},
+  {key:'Nov', name:'November', m:10, y:2026, rows:[
+    ['Sun',1,[['10:00 AM','10:00 – 11:00 AM',22],['11:00 AM','11:00 – 12:00 PM',22]]]
+  ]}
+];
+var PRICE = {full:45, mini:35};
+var LOW = 3;                                 // "N left" threshold
+
+/* ---------- gallery ---------- */
+var SLIDES = [];
+for (var i=1;i<=11;i++){ SLIDES.push('img/slide-'+(i<10?'0':'')+i+'.jpg'); }
+var ALT = 'A child decorating a keepsake box at the Cosmic Cat Squishy Bar';
+
+var track=document.getElementById('track'),
+    dots=document.getElementById('dots'),
+    thumbs=document.getElementById('thumbs'),
+    gcount=document.getElementById('gcount');
+
+SLIDES.forEach(function(src,i){
+  var f=document.createElement('figure');
+  var im=document.createElement('img');
+  im.src=src; im.alt=ALT; im.loading = i<2 ? 'eager' : 'lazy'; im.decoding='async';
+  f.appendChild(im); track.appendChild(f);
+
+  var d=document.createElement('i'); if(i===0)d.className='on'; dots.appendChild(d);
+
+  var b=document.createElement('button'); b.type='button';
+  if(i===0)b.className='on';
+  b.setAttribute('aria-label','Photo '+(i+1));
+  var ti=document.createElement('img'); ti.src=src; ti.alt=''; ti.loading='lazy';
+  b.appendChild(ti);
+  b.onclick=function(){ track.scrollTo({left:track.clientWidth*i, behavior:'smooth'}); };
+  thumbs.appendChild(b);
+});
+gcount.textContent='1 / '+SLIDES.length;
+
+var gtick;
+track.addEventListener('scroll',function(){
+  clearTimeout(gtick);
+  gtick=setTimeout(function(){
+    var n=Math.round(track.scrollLeft/track.clientWidth);
+    n=Math.max(0,Math.min(SLIDES.length-1,n));
+    gcount.textContent=(n+1)+' / '+SLIDES.length;
+    [].forEach.call(dots.children,function(el,i){ el.className = i===n?'on':''; });
+    [].forEach.call(thumbs.children,function(el,i){ el.className = i===n?'on':''; });
+  },60);
+});
+
+/* ---------- gem confetti ---------- */
+(function(){
+  var host=document.getElementById('gems');
+  var colors=['#FF22B1','#7A3CFF','#00C2FF','#FFB800','#FF5C8A','#25D0A8','#B57BFF','#FF8A3D','#4C6FFF','#FF3D6E'];
+  var n = window.innerWidth<700 ? 9 : 22;
+  var op = window.innerWidth<700 ? .28 : .45;
+  for(var i=0;i<n;i++){
+    var c=colors[i%colors.length];
+    var s=16+Math.random()*26;
+    var kind=i%3;
+    var path = kind===0
+      ? '<path d="M50 4 L96 38 L78 94 L22 94 L4 38 Z" fill="'+c+'"/>'
+      : kind===1
+        ? '<path d="M50 2 L74 26 L98 50 L74 74 L50 98 L26 74 L2 50 L26 26 Z" fill="'+c+'"/>'
+        : '<circle cx="50" cy="50" r="46" fill="'+c+'"/>';
+    var g=document.createElement('div');
+    g.innerHTML='<svg width="'+s+'" height="'+s+'" viewBox="0 0 100 100">'+path+'</svg>';
+    var svg=g.firstChild;
+    svg.style.left=(Math.random()*98)+'vw';
+    svg.style.top=(Math.random()*96)+'vh';
+    svg.style.opacity=op*(.55+Math.random()*.45);
+    svg.style.transform='rotate('+Math.floor(Math.random()*360)+'deg)';
+    host.appendChild(svg);
+  }
+})();
+
+/* ---------- booking ---------- */
+var mi=0, di=-1, ti_=-1, qty={full:0,mini:0}, touched=false;
+
+var elMtabs=document.getElementById('mtabs'),
+    elDates=document.getElementById('dates'),
+    elTimes=document.getElementById('times'),
+    elTmsg=document.getElementById('tmsg'),
+    elSumline=document.getElementById('sumline'),
+    elSumtotal=document.getElementById('sumtotal'),
+    elCta=document.getElementById('cta'),
+    elSticky=document.getElementById('sticky'),
+    elDemo=document.getElementById('demonote');
+
+function dayLeft(row){ return row[2].reduce(function(a,t){return a+t[2];},0); }
+function curRow(){ return di<0?null:MONTHS[mi].rows[di]; }
+function curTime(){ var r=curRow(); return (r && ti_>=0) ? r[2][ti_] : null; }
+function cap(){ var t=curTime(); return t?t[2]:0; }
+function total(){ return qty.full*PRICE.full + qty.mini*PRICE.mini; }
+function seats(){ return qty.full+qty.mini; }
+
+function renderMonths(){
+  elMtabs.innerHTML='';
+  MONTHS.forEach(function(M,i){
+    var b=document.createElement('button'); b.type='button'; b.textContent=M.name;
+    if(i===mi)b.className='on';
+    b.onclick=function(){ mi=i; di=-1; ti_=-1; touched=true; renderDates(); renderTimes(); update(); };
+    elMtabs.appendChild(b);
+  });
+}
+
+function renderDates(){
+  elDates.innerHTML='';
+  var M=MONTHS[mi], hasToday=false;
+  M.rows.forEach(function(row,idx){
+    var left=dayLeft(row), out=left===0, low=left>0&&left<=LOW;
+    var b=document.createElement('button'); b.type='button';
+    b.className='dbtn'+(out?' out':'')+(idx===di?' on':'');
+    var isToday = (M.y===TODAY.y && M.m===TODAY.m && row[1]===TODAY.d);
+    if(isToday) hasToday=true;
+    b.innerHTML =
+      (isToday?'<span class="today"></span>':'') +
+      '<span class="dw">'+row[0]+'</span>' +
+      '<span class="dn">'+row[1]+'</span>' +
+      '<span class="dm">'+M.key+'</span>' +
+      '<span class="st '+(out?'so':(low?'low':''))+'">'+(out?'Sold out':(low?left+' left':''))+'</span>';
+    b.setAttribute('aria-label', row[0]+' '+M.name+' '+row[1]+(out?', sold out':(low?', '+left+' left':'')));
+    b.onclick=function(){
+      touched=true; di=idx; ti_=-1;
+      var t=row[2].filter(function(x){return x[2]>0;});
+      if(t.length===1){ ti_=row[2].indexOf(t[0]); }
+      renderDates(); renderTimes(); update();
+    };
+    elDates.appendChild(b);
+  });
+  document.getElementById('legend').innerHTML =
+    (hasToday?'<span><i></i> Today</span>':'') +
+    '<span>Sessions run Friday, Saturday and Sunday</span>';
+}
+
+function nextAfter(){
+  // first open session after the currently selected date, else soonest anywhere
+  var found=null, soonest=null, passed=false;
+  for(var a=0;a<MONTHS.length;a++){
+    for(var b=0;b<MONTHS[a].rows.length;b++){
+      var row=MONTHS[a].rows[b];
+      for(var c=0;c<row[2].length;c++){
+        if(row[2][c][2]>0){
+          var hit={mi:a,di:b,ti:c,label:row[0]+', '+MONTHS[a].key+' '+row[1]+' at '+row[2][c][0]};
+          if(!soonest) soonest=hit;
+          if(passed && !found) found=hit;
+        }
+      }
+      if(a===mi && b===di) passed=true;
+    }
+  }
+  return found ? {hit:found,label:'Next opening'} : (soonest?{hit:soonest,label:'Soonest opening'}:null);
+}
+
+function renderTimes(){
+  elTimes.innerHTML='';
+  var row=curRow();
+  if(!row){
+    elTmsg.style.display='';
+    elTmsg.className='tmsg';
+    elTmsg.textContent='Pick a day on the calendar to see its session times.';
+    return;
+  }
+  if(dayLeft(row)===0){
+    var M=MONTHS[mi], n=nextAfter();
+    elTmsg.style.display='';
+    elTmsg.className='tmsg soldout';
+    elTmsg.innerHTML='<b>'+row[0]+', '+M.key+' '+row[1]+' is sold out.</b>';
+    if(n){
+      var nb=document.createElement('button');
+      nb.type='button'; nb.className='nextbtn';
+      nb.textContent=n.label+': '+n.hit.label+' →';
+      nb.onclick=function(){
+        mi=n.hit.mi; di=n.hit.di; ti_=n.hit.ti; touched=true;
+        renderMonths(); renderDates(); renderTimes(); update();
+        document.getElementById('panel').scrollIntoView({behavior:'smooth',block:'start'});
+      };
+      elTmsg.appendChild(nb);
+    } else {
+      var p=document.createElement('div'); p.style.fontSize='13.5px';
+      p.innerHTML='Give us a call at <a href="tel:+17025086959">(702) 508-6959</a>.';
+      elTmsg.appendChild(p);
+    }
+    return;
+  }
+  elTmsg.style.display='none';
+  row[2].forEach(function(t,idx){
+    var out=t[2]===0, low=t[2]>0&&t[2]<=LOW;
+    var b=document.createElement('button'); b.type='button';
+    b.className='tbtn'+(out?' out':'')+(idx===ti_?' on':'');
+    b.innerHTML='<b>'+t[0]+'</b><span class="'+(low?'low':'')+'">'+(out?'SOLD OUT':(low?t[2]+' seats left':t[1]))+'</span>';
+    if(out){ b.disabled=true; }
+    else b.onclick=function(){
+      ti_=idx; touched=true;
+      if(seats()>t[2]) qty={full:0,mini:0};
+      renderTimes(); update();
+    };
+    elTimes.appendChild(b);
+  });
+}
+
+function update(){
+  // box steppers
+  ['full','mini'].forEach(function(k){
+    document.getElementById('q-'+k).textContent=qty[k];
+    var card=document.querySelector('.box[data-box="'+k+'"]');
+    card.classList.toggle('has', qty[k]>0);
+    var btns=card.querySelectorAll('.qty button');
+    btns[0].disabled = qty[k]===0;
+    btns[1].disabled = !curTime() || seats()>=cap();
+  });
+
+  var t=curTime(), row=curRow(), M=MONTHS[mi];
+  elSumtotal.textContent='$'+total();
+
+  if(!row){ elSumline.textContent='Pick a day to get started'; }
+  else if(dayLeft(row)===0){ elSumline.textContent='Sold out · pick another day above'; }
+  else if(!t){ elSumline.textContent='Choose a session'; }
+  else if(seats()===0){ elSumline.textContent='Choose a box for each child'; }
+  else {
+    elSumline.textContent=seats()+(seats()===1?' seat':' seats')+' · '+row[0]+', '+M.key+' '+row[1]+' at '+t[0];
+  }
+
+  var ready = !!t && seats()>0;
+  elCta.disabled=!ready;
+  elCta.textContent = ready ? ('Reserve '+seats()+(seats()===1?' seat':' seats')+' · $'+total()) : 'Reserve your seats';
+
+  if(ready){
+    elSticky.classList.add('show');
+    document.getElementById('stickyline').textContent='$'+total()+' · '+seats()+(seats()===1?' seat':' seats');
+    document.getElementById('stickysub').textContent=row[0]+', '+M.key+' '+row[1]+' at '+t[0];
+  } else {
+    elSticky.classList.remove('show');
+  }
+}
+
+document.querySelectorAll('.box .qty button').forEach(function(b){
+  b.onclick=function(){
+    var k=b.closest('.box').dataset.box, s=parseInt(b.dataset.step,10);
+    var next=qty[k]+s;
+    if(next<0) return;
+    if(s>0 && (!curTime() || seats()>=cap())) return;
+    qty[k]=next; update();
+  };
+});
+
+function reserve(){
+  var t=curTime(), row=curRow(), M=MONTHS[mi];
+  elDemo.style.display='block';
+  elDemo.innerHTML='<b>Mockup only.</b> On the live site this hands off to Shopify checkout with '+
+    seats()+' seat'+(seats()===1?'':'s')+' for '+row[0]+', '+M.key+' '+row[1]+' at '+t[0]+
+    (qty.full?' and '+qty.full+' Full Box upgrade'+(qty.full===1?'':'s'):'')+
+    ' — $'+total()+' total.';
+  elDemo.scrollIntoView({behavior:'smooth',block:'center'});
+}
+elCta.onclick=reserve;
+document.getElementById('stickybtn').onclick=function(){
+  document.getElementById('panel').scrollIntoView({behavior:'smooth',block:'end'});
+  reserve();
+};
+
+renderMonths(); renderDates(); renderTimes(); update();
+</script>
+</body>
+</html>
